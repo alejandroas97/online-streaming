@@ -21,6 +21,10 @@ func main() {
 	db.DB.AutoMigrate(models.Film{})
 
 	r.HandleFunc(BaseURI+"/users", routes.GetAllUsers).Methods("GET")
+	r.HandleFunc(BaseURI+"/users", routes.CreateUser).Methods("POST")
+	r.HandleFunc(BaseURI+"/users/login", routes.Login).Methods("POST")
+
+	r.HandleFunc(BaseURI+"/films", routes.CheckAuth(routes.CreateFilm)).Methods("POST")
 
 	log.Println("Server is running on port 8000")
 	log.Fatal(http.ListenAndServe(":8000", r))

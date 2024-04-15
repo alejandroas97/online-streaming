@@ -1,22 +1,28 @@
 package repository
 
 import (
-	"gorm.io/gorm"
+	"fmt"
 
+	"github.com/alejandroas97/online-streaming/db"
 	"github.com/alejandroas97/online-streaming/models"
 )
 
-type FilmRepository struct {
-	db *gorm.DB
-}
+func CreateFilm(film *models.Film) (*models.Film, error) {
+	foundFilm := FindFilm(film)
 
-func (r *FilmRepository) GetFilmByID(filmID int) (*models.Film, error) {
-	var film models.Film
-	film.ID = uint(filmID)
-
-	if err := r.db.First(&film).Error; err != nil {
-		return nil, err
+	if foundFilm != nil {
+		return nil, fmt.Errorf("la película %s ya existe en la base de datos", film.Title)
 	}
 
-	return &film, nil
+	if err := db.DB.Create(&film).Error; err != nil {
+		return nil, err
+	}
+	return film, nil
+}
+
+func FindFilm(film *models.Film) *models.Film {
+	if err := db.DB.Where("title = ?", film.Title).First(&film).Error; err != nil {
+		return nil
+	}
+	return film
 }
