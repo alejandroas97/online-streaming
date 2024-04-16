@@ -23,7 +23,7 @@ func GetAllUsers() *[]models.User {
 }
 
 func CreateUser(user *models.User) (*models.User, error) {
-	userLogged := FindUser(user)
+	userLogged := GetUserByUsername(user)
 
 	if userLogged != nil {
 		return nil, fmt.Errorf("el usuario %s ya está creado", user.Username)
@@ -41,28 +41,18 @@ func CreateUser(user *models.User) (*models.User, error) {
 	return user, nil
 }
 
-func FindUser(user *models.User) *models.User {
+func GetUserByUsername(user *models.User) *models.User {
 	if err := db.DB.Where("username = ?", user.Username).First(&user).Error; err != nil {
 		return nil
 	}
 	return user
 }
 
-// func Login(user *models.User) *models.User {
-// 	// Buscar el usuario en la base de datos
-// 	var userInDB models.User
-// 	err := FindUser(user).First(&userInDB).Error
-// 	if err != nil {
-// 		// Si hay un error, el usuario no existe
-// 		fmt.Println("USUARIO NO EXISTE")
-// 		return nil
-// 	}
+func GetUserById(user *models.User) *models.User {
+	if err := db.DB.Where("id = ?", user.ID).First(&user).Error; err != nil {
+		return nil
+	}
 
-// 	// Verificar si la contraseña coincide
-// 	if VerifyPassword(user.Password, userInDB.Password) {
-// 		fmt.Println("Coincide la contraseña")
-// 		return &userInDB // Devolver el usuario si la contraseña coincide
-// 	}
-// 	fmt.Println("CONTRASEÑA NO COINCIDE")
-// 	return nil
-// }
+	user.Password = ""
+	return user
+}

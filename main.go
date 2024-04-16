@@ -25,6 +25,10 @@ func main() {
 	r.HandleFunc(BaseURI+"/users/login", routes.Login).Methods("POST")
 
 	r.HandleFunc(BaseURI+"/films", routes.CheckAuth(routes.CreateFilm)).Methods("POST")
+	r.HandleFunc(BaseURI+"/films", routes.CheckAuth(routes.GetAllFilms)).Methods("GET")
+	r.HandleFunc(BaseURI+"/films/{title}", routes.CheckAuth(routes.UpdateFilm)).Methods("PUT")
+	r.HandleFunc(BaseURI+"/films/{id}", routes.CheckAuth(routes.DeleteFilm)).Methods("DELETE")
+	r.HandleFunc(BaseURI+"/films/{title}", routes.CheckAuth(routes.GetFilmByTitle)).Methods("GET")
 
 	log.Println("Server is running on port 8000")
 	log.Fatal(http.ListenAndServe(":8000", r))

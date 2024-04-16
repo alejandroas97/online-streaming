@@ -2,8 +2,9 @@ package routes
 
 import (
 	"encoding/json"
-	"fmt"
 	"net/http"
+	"regexp"
+	"strings"
 	"time"
 
 	"github.com/alejandroas97/online-streaming/models"
@@ -28,6 +29,26 @@ func CreateUser(w http.ResponseWriter, r *http.Request) {
 	var user models.User
 	json.NewDecoder(r.Body).Decode(&user)
 
+	if strings.TrimSpace(user.Username) == "" {
+		http.Error(w, "El nombre de usuario no puede estar vacío", http.StatusBadRequest)
+		return
+	}
+
+	if strings.TrimSpace(user.Password) == "" {
+		http.Error(w, "La contraseña no puede estar vacía", http.StatusBadRequest)
+		return
+	}
+
+	if !validateUsername(user.Username) {
+		http.Error(w, "El nombre de usuario debe empezar con una letra, evite acentos", http.StatusBadRequest)
+		return
+	}
+
+	if validatePassword(user.Password) {
+		http.Error(w, "La contraseña excede de 20 dígitos", http.StatusBadRequest)
+		return
+	}
+
 	createdUser, err := repository.CreateUser(&user)
 
 	if createdUser == nil {
@@ -38,9 +59,17 @@ func CreateUser(w http.ResponseWriter, r *http.Request) {
 	json.NewEncoder(w).Encode(&user)
 }
 
+func validateUsername(username string) bool {
+	usernameRegex := regexp.MustCompile(`^[a-zA-Z][a-zA-Z0-9]*$`)
+	return usernameRegex.MatchString(username)
+}
+
+func validatePassword(password string) bool {
+	return len(password) > 20
+}
+
 func Login(w http.ResponseWriter, r *http.Request) {
 	var loginUser models.User
-	fmt.Println("LOGIN")
 	err := json.NewDecoder(r.Body).Decode(&loginUser)
 	if err != nil {
 		http.Error(w, "Error al decodificar la solicitud", http.StatusBadRequest)
@@ -48,9 +77,8 @@ func Login(w http.ResponseWriter, r *http.Request) {
 	}
 
 	user := loginUser
-	userLogged := repository.FindUser(&user)
+	userLogged := repository.GetUserByUsername(&user)
 	if userLogged == nil {
-		// Si el usuario no existe, las credenciales no son válidas
 		http.Error(w, "Usuario o contraseña incorrectos", http.StatusUnauthorized)
 		return
 	}
@@ -75,7 +103,6 @@ func Login(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	// Devolver el token JWT como respuesta
 	w.Write([]byte(tokenString))
 
 }
@@ -89,7 +116,6 @@ func CheckAuth(next http.HandlerFunc) http.HandlerFunc {
 		}
 		tokenString = tokenString[len("Bearer "):]
 
-		// Parsear el token JWT
 		token, err := jwt.ParseWithClaims(tokenString, &Claims{}, func(token *jwt.Token) (interface{}, error) {
 			return jwtKey, nil
 		})
@@ -98,7 +124,7 @@ func CheckAuth(next http.HandlerFunc) http.HandlerFunc {
 				http.Error(w, "Token de autenticación inválido", http.StatusUnauthorized)
 				return
 			}
-			http.Error(w, "Token de autenticación inválido", http.StatusBadRequest)
+			http.Error(w, "Token de autenticación inválido", http.StatusUnauthorized)
 			return
 		}
 		if !token.Valid {
