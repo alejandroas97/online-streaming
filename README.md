@@ -17,3 +17,9 @@ docker run --name postgres -e POSTGRES_USER=postgres -e POSTGRES_PASSWORD=postgr
 ```bash
 air .
 ```
+
+### Creación de tablas
+
+El lanzamiento del propio proyecto creará las tablas en la base de datos.
+
+Se adjunta script sql para la creación de la base de datos e inserción de datos iniciales.
