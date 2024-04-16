@@ -2,24 +2,32 @@
 
 The Online Streaming API provides endpoints to manage users and films on an online streaming platform. With this API, users can sign up, log in, search, and view movie details, among other functionalities.
 
-## Instalación
+## Installation
 
-Asegúrate de tener Docker y Postgres instalados en tu sistema antes de comenzar.
+Make sure you have Docker and Postgres installed on your system before starting.
 
-### Lanza base de datos postgresql en contenedor docker
+### Launch PostgreSQL database in Docker container
 
 ```bash
 docker run --name postgres -e POSTGRES_USER=postgres -e POSTGRES_PASSWORD=postgres -p 5432:5432 -d postgre
 ```
 
-### Lanzar proyecto
+### Install dependencies
+
+go mod download
+
+### Launch project
 
 ```bash
 air .
 ```
 
-### Creación de tablas
+### Creating tables
 
-El lanzamiento del propio proyecto creará las tablas en la base de datos.
+Launching the project itself will create the tables in the database.
 
-Se adjunta script sql para la creación de la base de datos e inserción de datos iniciales.
+An SQL script is attached for creating the database and inserting initial data.
+
+## Postman Collection
+
+A Postman collection is included for testing the API.

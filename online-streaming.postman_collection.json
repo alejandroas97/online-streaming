@@ -1,0 +1,238 @@
+{
+	"info": {
+		"_postman_id": "7db66896-cd2c-43c0-b75d-60faaadbc8f1",
+		"name": "online-streaming",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "34121262"
+	},
+	"item": [
+		{
+			"name": "getAllUsers",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{URL}}/online-streaming/v1/users",
+					"host": [
+						"{{URL}}"
+					],
+					"path": [
+						"online-streaming",
+						"v1",
+						"users"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "getAllFilms",
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "Bearer {{apiToken}}",
+						"type": "text"
+					}
+				],
+				"url": {
+					"raw": "{{URL}}/online-streaming/v1/films?title=Inception",
+					"host": [
+						"{{URL}}"
+					],
+					"path": [
+						"online-streaming",
+						"v1",
+						"films"
+					],
+					"query": [
+						{
+							"key": "title",
+							"value": "Inception"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "getFilmByName",
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "Bearer {{apiToken}}",
+						"type": "text"
+					}
+				],
+				"url": {
+					"raw": "{{URL}}/online-streaming/v1/films/Forrest Gump",
+					"host": [
+						"{{URL}}"
+					],
+					"path": [
+						"online-streaming",
+						"v1",
+						"films",
+						"Forrest Gump"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "register",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"username\": \"alejandroas\",\r\n    \"password\": \"granCanaria2024\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{URL}}/online-streaming/v1/users",
+					"host": [
+						"{{URL}}"
+					],
+					"path": [
+						"online-streaming",
+						"v1",
+						"users"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "createFilm",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "Bearer {{apiToken}}",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n  \"Title\": \"Interstellar\",\r\n  \"Genre\": \"Adventure, Drama, Sci-Fi\",\r\n  \"ReleaseDate\": \"2014-11-07T00:00:00Z\",\r\n  \"Synopsis\": \"A team of explorers travel through a wormhole in space in an attempt to ensure humanity's survival.\",\r\n  \"Director\": \"Christopher Nolan\",\r\n  \"Duration\": 169,\r\n  \"FilmaffinityRating\": 8.3\r\n}\r\n",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{URL}}/online-streaming/v1/films",
+					"host": [
+						"{{URL}}"
+					],
+					"path": [
+						"online-streaming",
+						"v1",
+						"films"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "updateFilm",
+			"request": {
+				"method": "PUT",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "Bearer {{apiToken}}",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n  \"Title\": \"Interstellar\",\r\n  \"Genre\": \"Adventure, Drama, Sci-Fi\",\r\n  \"ReleaseDate\": \"2014-11-07T00:00:00Z\",\r\n  \"Synopsis\": \"A team of explorers travel through a wormhole in space in an attempt to ensure humanity's survival.\",\r\n  \"Director\": \"Christopher Nolan\",\r\n  \"Duration\": 169,\r\n  \"FilmaffinityRating\": 8.3\r\n}\r\n",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{URL}}/online-streaming/v1/films/Interstellar",
+					"host": [
+						"{{URL}}"
+					],
+					"path": [
+						"online-streaming",
+						"v1",
+						"films",
+						"Interstellar"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "deleteFilm",
+			"request": {
+				"method": "DELETE",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "Bearer {{apiToken}}",
+						"type": "text"
+					}
+				],
+				"url": {
+					"raw": "{{URL}}/online-streaming/v1/films/15",
+					"host": [
+						"{{URL}}"
+					],
+					"path": [
+						"online-streaming",
+						"v1",
+						"films",
+						"15"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "login",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"username\": \"alejandroas\",\r\n    \"password\": \"granCanaria2024\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{URL}}/online-streaming/v1/users/login",
+					"host": [
+						"{{URL}}"
+					],
+					"path": [
+						"online-streaming",
+						"v1",
+						"users",
+						"login"
+					]
+				}
+			},
+			"response": []
+		}
+	]
+}
